@@ -1,0 +1,48 @@
+package com.universidad.mvc.controller;
+
+import com.universidad.mvc.model.Usuario;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+
+import java.io.IOException;
+import java.util.Map;
+
+@WebServlet("/login")
+public class LoginServlet extends HttpServlet {
+
+    private static final Map<String, String> USERS = Map.of(
+            "admin", "Admin123!",
+            "viewer", "View456!"
+    );
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String user = req.getParameter("username");
+        String pass = req.getParameter("password");
+
+        if (user != null && USERS.containsKey(user) && USERS.get(user).equals(pass)) {
+
+            HttpSession session = req.getSession(true);
+            String rol = "admin".equals(user) ? "ADMIN" : "VIEWER";
+
+            session.setAttribute("usuarioActual",
+                    new Usuario(user, user + "@mail.com", rol));
+
+            resp.sendRedirect("productos");
+
+        } else {
+            req.setAttribute("errorLogin", "Credenciales incorrectas");
+            req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+        }
+    }
+}
