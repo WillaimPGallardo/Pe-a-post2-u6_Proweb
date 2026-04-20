@@ -1,0 +1,6 @@
+com\universidad\mvc\model\Usuario.class
+com\universidad\mvc\service\ProductoService.class
+com\universidad\mvc\model\Producto.class
+com\universidad\mvc\controller\IdiomaServlet.class
+com\universidad\mvc\controller\ProductoServlet.class
+com\universidad\mvc\controller\LoginServlet.class
